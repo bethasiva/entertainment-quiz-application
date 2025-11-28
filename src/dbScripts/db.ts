@@ -8,9 +8,7 @@ const postgresConfig = {
   port: ENV.PG_DATABASE_PORT,
   user: ENV.PG_DATABASE_USERNAME,
   password: ENV.PG_DATABASE_PASSWORD,
-  ssl: ENV.NODE_ENV === "production"
-    ? { rejectUnauthorized: true }
-    : { rejectUnauthorized: false },
+  ssl: { rejectUnauthorized: false },
 };
 
 const pool = new Pool(postgresConfig);
