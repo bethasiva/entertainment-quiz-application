@@ -3,8 +3,8 @@ APP_BASE_URL="http://localhost:3000"
 # ENDPOINTS TO FETCH QUIZ DATA
 TRIVIA_QUESTIONS_API_ENDPOINT="https://the-trivia-api.com/v2/questions"
 
-PG_DATABASE_HOST=dpg-cqf5gc0gph6c73b6vsq0-a.oregon-postgres.render.com
-PG_DATABASE_NAME=defaultdb_1t2u
-PG_DATABASE_USERNAME=defaultdb_1t2u_user
-PG_DATABASE_PASSWORD=wH0ceURXj5sQHn364eWiIvCLCEFlvVyP
-PG_DATABASE_PORT=5432
+PG_DATABASE_HOST=postgres-bethasiva7780-9947.g.aivencloud.com
+PG_DATABASE_NAME=defaultdb
+PG_DATABASE_USERNAME=avnadmin
+PG_DATABASE_PASSWORD=AVNS_zXjHl9FRQg6pbtLlTra
+PG_DATABASE_PORT=20105
