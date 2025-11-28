@@ -1,12 +1,14 @@
-import quizSelectionData from "@/constants/quizSelectionData";
-import QuizSelectionContainer from "@/containers/quizSelectionContainer";
-import { notFound } from "next/navigation";
+import {QUIZ_SELECTION_DATA} from "@quiz/constants";
+import {QuizSelectionContainer} from "@quiz/containers";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+	title: "Select Quiz Options",
+	description: "Quiz application",
+};
 
 const QuizSelectionPage = () => {
-	if (!(quizSelectionData && Object.keys(quizSelectionData).length)) {
-		return notFound();
-	}
-	return <QuizSelectionContainer quizSelectionData={quizSelectionData} />;
+	return <QuizSelectionContainer quizSelectionData={QUIZ_SELECTION_DATA} />;
 };
 
 export default QuizSelectionPage;

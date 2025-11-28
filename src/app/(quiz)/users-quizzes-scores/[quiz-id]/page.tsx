@@ -1,13 +1,32 @@
-import SingleQuizScoreContainer from "@/containers/singleQuizScoreContainer";
-import getQuizScoreById from "@/dbScripts/getQuizScoreById";
-import { StringKeyValuePair } from "@/types/types";
+import { PageLoader } from "@components";
+import {SingleQuizScoreContainer} from "@quiz/containers";
+import {getQuizScoreById} from "@quiz/dbScripts";
+import { StringKeyValuePair } from "@types";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { validate as isUuid } from "uuid";
+
+export const metadata: Metadata = {
+	title: "Quiz Score",
+	description: "Quiz application",
+};
 
 /**
  * Page component to display a single quiz score based on the provided quiz ID.
  */
-const QuizScorePage = async ({ params }: { params: StringKeyValuePair }) => {
+interface Props {
+	params: StringKeyValuePair;
+}
+const QuizScorePage = async ({ params }: Props) => {
+	return (
+		<Suspense fallback={<PageLoader text="Fetching quiz score..." />}>
+			<QuizScoreData params={params} />
+		</Suspense>
+	);
+};
+
+async function QuizScoreData({ params }: Props) {
 	const id = params["quiz-id"];
 
 	// Validate the quiz ID to ensure it is a valid UUID.
@@ -21,6 +40,5 @@ const QuizScorePage = async ({ params }: { params: StringKeyValuePair }) => {
 
 	// Return the `SingleQuizScoreContainer` component with the fetched quiz score.
 	return <SingleQuizScoreContainer quizScore={quizScore} />;
-};
-
+}
 export default QuizScorePage;

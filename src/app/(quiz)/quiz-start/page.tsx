@@ -1,57 +1,38 @@
-import QuizQuestionsContainer from "@/containers/quizQuestionsContainer";
+import { Loader, PageLoader } from "@components";
+import { QuizQuestionsContainer } from "@quiz/containers";
 import {
-	QuizQuestion,
-	StringArrayKeyValuePair,
 	StringKeyValuePair,
-} from "@/types/types";
-import fetchApi from "@/utils/fetchApi";
-import suffleItems from "@/utils/suffleItems";
-import { buildQueryString } from "@/utils/urlManipulation";
+} from "@types";
+import { getQuizQuestionsData } from "@quiz/utils";
+import { Metadata } from "next";
+import { Suspense } from "react";
+
+export const metadata: Metadata = {
+	title: "Quiz Questions",
+	description: "Quiz application",
+};
 
 /**
  * The `QuizStartPage` component is responsible for fetching quiz questions based on the provided search parameters
  * and rendering them using the `QuizQuestionsContainer` component.
  * */
-const QuizStartPage = async ({
-	searchParams,
-}: {
+type Props = {
 	searchParams: StringKeyValuePair;
-}) => {
-	const quizQuestionsData = await getQuizQuestionsData(searchParams);
-	return <QuizQuestionsContainer quizQuestionsData={quizQuestionsData} />;
 };
 
-/**
- * Fetches and processes quiz questions based on the search parameters.
- */
-async function getQuizQuestionsData(searchParams: StringKeyValuePair) {
-	const queryParams: StringArrayKeyValuePair = {};
+const QuizStartPage = async ({
+	searchParams,
+}: Props) => {
+	return (
+		<Suspense fallback={<PageLoader text="Questions are loading..." />}>
+			<QuizStart searchParams={searchParams} />
+		</Suspense>
+	)
+};
 
-	// Convert search parameters into the format required by the API.
-	Object.entries(searchParams).map(([key, value]) => {
-		queryParams[key] = value.split(",");
-	});
-
-	// Build the API URL with query parameters.
-	const url = `${process.env.APP_BASE_URL}/quiz-start/api/?${buildQueryString(
-		queryParams,
-	)}`;
-
-	// Fetch data from the API.
-	const questionsData = await fetchApi({ url });
-
-	// Process the fetched data to match the expected format.
-	return questionsData.map((quizQuestionData: any) => {
-		return {
-			...quizQuestionData,
-			question: quizQuestionData.question.text,
-			categoryName: quizQuestionData.category.split("_").join(" "),
-			allOptions: suffleItems([
-				...quizQuestionData.incorrectAnswers,
-				quizQuestionData.correctAnswer,
-			]),
-		};
-	}) as QuizQuestion[];
+async function QuizStart({ searchParams }: Props) {
+	const quizQuestionsData = await getQuizQuestionsData(searchParams);
+	return <QuizQuestionsContainer quizQuestionsData={quizQuestionsData} />;
 }
 
 export default QuizStartPage;

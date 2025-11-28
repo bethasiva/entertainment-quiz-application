@@ -1,5 +1,5 @@
 "use client";
-import RedirectLink from "@/components/RedirectLink";
+import {RedirectLink} from "@components";
 
 const Error = ({ error }: { error: Error }) => {
 	return (

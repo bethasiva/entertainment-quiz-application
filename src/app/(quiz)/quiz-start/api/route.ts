@@ -1,6 +1,8 @@
-import insertQuizScore from "@/dbScripts/insertQuizScore";
-import fetchApi from "@/utils/fetchApi";
-import getMainpulatedQuizScore from "@/utils/getMainpulatedQuizScore";
+import { ENV } from "@constants";
+import { insertQuizScore } from "@quiz/dbScripts";
+import { QuizApiResponse } from "@quiz/types";
+import { fetchApi } from "@utils";
+import { getMainpulatedQuizScore } from "@quiz/utils";
 import { type NextRequest, NextResponse } from "next/server";
 
 /**
@@ -9,16 +11,13 @@ import { type NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
 	try {
 		const { searchParams } = request.nextUrl;
+		const base = ENV.QUIZ_QUESTIONS_API_ENDPOINT;
 
 		// Construct the API URL with query parameters if provided.
-		const url = searchParams.toString()
-			? `${
-					process.env.TRIVIA_QUESTIONS_API_ENDPOINT
-			  }/?${searchParams.toString()}`
-			: (process.env.TRIVIA_QUESTIONS_API_ENDPOINT as string);
+		const url = searchParams.toString() ? `${base}/?${searchParams.toString()}` : base;
 
 		// Fetch data from the trivia questions API.
-		const data = await fetchApi({ url });
+		const data = await fetchApi<QuizApiResponse>({ url });
 
 		// Return the fetched data as a JSON response.
 		return NextResponse.json(data);
@@ -49,6 +48,7 @@ export async function POST(request: NextRequest) {
 
 		// Manipulate the quiz score data as required.
 		const mainpulatedQuizScore = getMainpulatedQuizScore(reqBody);
+
 		if (!mainpulatedQuizScore) {
 			return new NextResponse(JSON.stringify({ error: "Processing error" }), {
 				status: 400,

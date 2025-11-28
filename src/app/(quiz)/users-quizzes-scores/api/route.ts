@@ -1,4 +1,4 @@
-import getQuizScoresByName from "@/dbScripts/getQuizScoresByName";
+import {getQuizScoresByName} from "@quiz/dbScripts";
 import { NextRequest, NextResponse } from "next/server";
 
 /**

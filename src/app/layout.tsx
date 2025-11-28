@@ -1,10 +1,4 @@
-import type { Metadata } from "next";
 import "./globals.css";
-
-export const metadata: Metadata = {
-	title: "Quiz App",
-	description: "Quiz application",
-};
 
 export default function RootLayout({
 	children,
